@@ -5,36 +5,31 @@ import (
 	"os"
 	"fmt"
 	"path/filepath"
+	"github.com/google/uuid"
 )
 
-func SaveArticle(article Article) error {
-	path := filepath.Join("data/", article.ID.String() +".json")
-	file, err := os.Create(path)
-	if err != nil {
-		return err
+func SaveArticle(article *Article) error {
+	if article == nil || article.ID == uuid.Nil {
+		return fmt.Errorf("invalid article: article is nil or ID is not set")
 	}
-	defer file.Close()
-
-	return json.NewEncoder(file).Encode(article)
-}
-
-func GetArticleByID(id string) (Article, error) {
-	if id == "" {
-		return Article{}, fmt.Errorf("invalid ID")
-	}
-
-	path := filepath.Join("data/", id +".json")
-	file, err := os.Open(path)
-	if err != nil {
-		return Article{}, err
-	}
-	defer file.Close()
 	
-	var article Article
-	err = json.NewDecoder(file).Decode(&article)
-	if err != nil {
-		return Article{}, err
+	_, err := os.Stat("data")
+	if os.IsNotExist(err) {
+		err = os.Mkdir("data", 0755)
+		if err != nil {
+			return fmt.Errorf("failed to create data directory: %w", err)
+		}
 	}
-	return article, nil
-}
 
+	bytes, err := json.MarshalIndent(article, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal article: %w", err)
+	}
+
+	err = os.WriteFile(filepath.Join("data/", article.ID.String()+".json"), bytes, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write article to file: %w", err)
+	}
+
+	return nil
+}
