@@ -1,4 +1,4 @@
-module scibe
+module scribe
 
 go 1.27.1
 
