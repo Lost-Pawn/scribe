@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/google/uuid"
 )
@@ -40,7 +42,7 @@ func GetArticleByID(id uuid.UUID) (*Article, error) {
 	if id == uuid.Nil {
 		return nil, fmt.Errorf("invalid article ID: ID is not set")
 	}
-	
+
 	path := filepath.Join("data/", id.String()+".json")
 	bytes, err := os.ReadFile(path)
 	if errors.Is(err, os.ErrNotExist) {
@@ -56,5 +58,49 @@ func GetArticleByID(id uuid.UUID) (*Article, error) {
 	}
 
 	return &article, nil
+}
+
+func ListArticles() ([]*Article, error) {
+	path := filepath.Join("data/")
+	files, err := os.ReadDir(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return []*Article{}, nil
+	} else if err != nil {
+		return []*Article{}, fmt.Errorf("failed to read data directory: %w", err)
+	}
+	
+	var articles []*Article
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		idStr := file.Name()
+		if filepath.Ext(idStr) == ".json" {
+			idStr = idStr[:len(idStr)-len(".json")]
+		} else {
+			continue
+		}
+
+		id, err := uuid.Parse(idStr)
+		if err != nil {
+			log.Printf("skipping article %s: %v", file.Name(), err)
+			continue
+		}
+
+		article, err := GetArticleByID(id)
+		if err != nil {
+			log.Printf("skipping article %s: %v", file.Name(), err)
+			continue
+		}
+
+		articles = append(articles, article)
+	}
+
+	sort.Slice(articles, func(i, j int) bool {
+		return articles[i].Date.After(articles[j].Date)
+	})
+
+	return articles, nil
 }
 
