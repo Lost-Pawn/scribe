@@ -68,7 +68,7 @@ func ListArticles() ([]*Article, error) {
 	} else if err != nil {
 		return []*Article{}, fmt.Errorf("failed to read data directory: %w", err)
 	}
-	
+
 	var articles []*Article
 	for _, file := range files {
 		if file.IsDir() {
@@ -104,3 +104,19 @@ func ListArticles() ([]*Article, error) {
 	return articles, nil
 }
 
+func DeleteArticle(id uuid.UUID) error {
+	if id == uuid.Nil {
+		return fmt.Errorf("invalid article ID: ID is not set")
+	}
+	path := filepath.Join("data/" + id.String() + ".json")
+
+	err := os.Remove(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("article not found: %w", err)
+	}
+	if err != nil {
+		return fmt.Errorf("failed to delete article: %w", err)
+	}
+
+	return nil
+}
