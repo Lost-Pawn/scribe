@@ -2,23 +2,25 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
 	"github.com/google/uuid"
 	"log"
 	"net/http"
 	"os"
 	"scribe/articles"
+	"html/template"
+	"bytes"
 
 	"time"
 )
+
+var homeTemplate = template.Must(template.ParseFiles("templates/home.html"))
+var articleTemplate = template.Must(template.ParseFiles("templates/article.html"))
 
 func isPublished(article *articles.Article, now time.Time) bool {
 	return !article.Date.After(now)
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-
 	articleslist, err := articles.ListArticles()
 	if err != nil {
 		log.Printf("Error occurred while listing articles: %v", err)
@@ -27,20 +29,26 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	now := time.Now().UTC()
+	var published []*articles.Article
 	for _, article := range articleslist {
 		if !isPublished(article, now) {
 			continue
 		}
-
-		fmt.Fprintf(w, "Title: %s\n", article.Title)
-		fmt.Fprintf(w, "Date: %s\n", article.Date.Format("2006-01-02 15:04:05"))
-		fmt.Fprintln(w, "-------------------------")
+		published = append(published, article)
 	}
+	var buf bytes.Buffer
+
+	if err := homeTemplate.Execute(&buf, published); err != nil {
+		log.Printf("template execution error: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Write(buf.Bytes())
 }
 
 func ArticleHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-
 	id, err := uuid.Parse(r.PathValue("id"))
 	if err != nil || id == uuid.Nil {
 		http.Error(w, "invalid article ID", http.StatusBadRequest)
@@ -65,8 +73,14 @@ func ArticleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Title: %s\n", article.Title)
-	fmt.Fprintf(w, "Date: %s\n", article.Date.Format("2006-01-02"))
-	fmt.Fprintln(w, "-------------------------")
-	fmt.Fprintf(w, "%s\n", article.Content)
+	var buf bytes.Buffer
+	if err := articleTemplate.Execute(&buf, article); err != nil {
+		log.Printf("template execution error: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Write(buf.Bytes())
 }
