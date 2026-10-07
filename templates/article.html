@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#14101e">
+    <meta
+        name="description"
+        content="{{.Title}} — a story from Scribe, a personal journal by Shashank."
+    >
+
+    <title>{{.Title}} — Scribe</title>
+
+    <link rel="stylesheet" href="/static/article.css">
+</head>
+
+<body id="top">
+    <a class="skip-link" href="#article-content">
+        Skip to article
+    </a>
+
+    <div class="site">
+        <!-- Same identity as the home page; fewer distractions. -->
+        <header class="container header">
+            <a class="brand" href="/" aria-label="Scribe home">
+                scribe<span aria-hidden="true">✳</span>
+            </a>
+
+            <nav aria-label="Main navigation">
+                <a href="/#articles" aria-current="page">
+                    The journal
+                </a>
+                <a href="/#about">Behind Scribe</a>
+            </nav>
+
+            <span class="header-note">
+                A mind in motion.
+            </span>
+        </header>
+
+        <main class="container reader">
+            <div class="reader-topline">
+                <a class="return-link" href="/#articles">
+                    <span aria-hidden="true">←</span>
+                    Back to the collection
+                </a>
+
+                <span class="edition-label">
+                    A thought becomes a story.
+                </span>
+            </div>
+
+            <div class="mirror-stage">
+                <!-- Decorative elements stay outside the reading surface. -->
+                <div class="mirror-aura" aria-hidden="true"></div>
+
+                <span class="stage-star" aria-hidden="true">
+                    ✳
+                </span>
+
+                <span class="stage-caption" aria-hidden="true">
+                    A LITTLE WONDER, IN WORDS.
+                </span>
+
+                <article
+                    class="mirror"
+                    aria-labelledby="article-title"
+                >
+                    <div class="mirror-surface">
+                        <div
+                            class="mirror-reflection"
+                            aria-hidden="true"
+                        ></div>
+
+                        <div class="mirror-inner">
+                            <header class="article-heading">
+                                <p class="eyebrow">
+                                    <span aria-hidden="true">✦</span>
+                                    From the collection
+                                </p>
+
+                                <div class="title-composition">
+                                    <!--
+                                        Decorative reflection only.
+                                        Hidden from assistive technology.
+                                    -->
+                                    <span
+                                        class="title-reflection"
+                                        aria-hidden="true"
+                                    >
+                                        {{.Title}}
+                                    </span>
+
+                                    <h1 id="article-title">
+                                        {{.Title}}
+                                    </h1>
+                                </div>
+
+                                <div class="article-meta">
+                                    <span class="byline">
+                                        By <strong>Shashank</strong>
+                                    </span>
+
+                                    <span
+                                        class="meta-dot"
+                                        aria-hidden="true"
+                                    ></span>
+
+                                    <time
+                                        datetime="{{.Date.Format "2006-01-02"}}"
+                                    >
+                                        {{.Date.Format "January 2, 2006"}}
+                                    </time>
+                                </div>
+
+                                <div
+                                    class="opening-rule"
+                                    aria-hidden="true"
+                                >
+                                    <span></span>
+                                    <span>✳</span>
+                                    <span></span>
+                                </div>
+                            </header>
+
+                            <!--
+                                Plain-text article content.
+
+                                Go's html/template escapes .Content safely.
+                                CSS preserves paragraph breaks.
+
+                                Keep the template action directly next to
+                                the div tags to avoid extra leading spaces.
+                            -->
+                            <div
+                                class="article-body"
+                                id="article-content"
+                                tabindex="-1"
+                            >{{.Content}}</div>
+
+                            <footer class="article-ending">
+                                <div
+                                    class="ending-mark"
+                                    aria-hidden="true"
+                                >
+                                    <span></span>
+                                    <span>✦</span>
+                                    <span></span>
+                                </div>
+
+                                <p class="ending-label">
+                                    A pause between stories
+                                </p>
+
+                                <p class="ending-message">
+                                    Thanks for spending a little
+                                    <em>time here.</em>
+                                </p>
+
+                                <div class="author-note">
+                                    <img
+                                        src="/public/cat-icon.jpg"
+                                        alt="Shashank’s avatar"
+                                        width="48"
+                                        height="48"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                    <div>
+                                        <span>Written &amp; built by</span>
+                                        <strong>Shashank</strong>
+                                        <p>
+                                            Still learning.
+                                            Still noticing.
+                                        </p>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <section
+                class="afterword"
+                aria-labelledby="afterword-title"
+            >
+                <div>
+                    <p class="eyebrow">The journal stays open</p>
+
+                    <h2 id="afterword-title">
+                        Another thought.<br>
+                        <em>Another little journey.</em>
+                    </h2>
+                </div>
+
+                <a class="collection-link" href="/#articles">
+                    Wander through the collection
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </section>
+        </main>
+
+        <footer class="container footer">
+            <a class="brand footer-brand" href="/" aria-label="Scribe home">
+                scribe<span aria-hidden="true">✳</span>
+            </a>
+
+            <p>
+                A personal journal. An open invitation.
+            </p>
+
+            <a class="back-top" href="#top">
+                Back to top
+                <span aria-hidden="true">↑</span>
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
