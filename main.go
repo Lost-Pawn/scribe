@@ -8,10 +8,12 @@ import (
 func Server() {
 	mux := http.NewServeMux()
 
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	mux.HandleFunc("GET /{$}", handlers.HomeHandler)
+	mux.HandleFunc("GET /article/{id}", handlers.ArticleHandler)
 
-
-	err := http.ListenAndServe("localhost:8080", mux)
+	err := http.ListenAndServe("localhost:8001", mux)
 	if err != nil {
 		panic(err)
 	}
