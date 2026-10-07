@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#14101e">
+    <meta
+        name="description"
+        content="Scribe — a personal journal by Shashank. A collection of thoughts, stories, and things worth noticing."
+    >
+    <title>Scribe — A mind in motion</title>
+    <link rel="stylesheet" href="/static/home.css">
+</head>
+
+<body id="top">
+    <input
+        class="motion-input"
+        type="checkbox"
+        id="reduce-motion"
+        aria-label="Pause decorative motion"
+    >
+
+    <div class="site">
+        <div class="scroll-progress" aria-hidden="true"></div>
+        <a class="skip-link" href="#articles">Skip to articles</a>
+
+        <header class="container header">
+            <a class="brand" href="/" aria-label="Scribe home">
+                scribe<span aria-hidden="true">✳</span>
+            </a>
+
+            <nav aria-label="Main navigation">
+                <a href="#articles">The journal</a>
+                <a href="#about">Behind Scribe</a>
+            </nav>
+
+            <label class="motion-control" for="reduce-motion">
+                <span class="control-dot" aria-hidden="true"></span>
+                Pause motion
+            </label>
+        </header>
+
+        <main class="container">
+            <section class="hero" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span aria-hidden="true">✦</span>
+                        A personal journal by Shashank
+                    </p>
+
+                    <h1 id="hero-title">
+                        A mind<br>
+                        in <em>motion.</em>
+                    </h1>
+
+                    <p class="intro">
+                        A collection of thoughts, stories, and things worth
+                        noticing. Written with curiosity. Shared with you.
+                    </p>
+
+                    <a class="primary-link" href="#articles">
+                        Find your next read
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                    <p class="hero-footnote">
+                        No rush. Just a good place to wander.
+                    </p>
+                </div>
+
+                <div class="hero-art" aria-hidden="true">
+                    <div class="art-glow"></div>
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+
+                    <div class="art-paper">
+                        <span class="paper-label">THE ART OF NOTICING</span>
+                        <span class="paper-letter">S</span>
+                        <span class="paper-bottom">
+                            A thought becomes a story.
+                            <span>↗</span>
+                        </span>
+                    </div>
+
+                    <span class="art-star">✳</span>
+                    <span class="art-caption">A LITTLE WONDER, IN WORDS.</span>
+                </div>
+            </section>
+
+            <div class="interlude" aria-hidden="true">
+                <span>Curiosity, collected.</span>
+                <span>✳</span>
+                <span>One story at a time.</span>
+            </div>
+
+            <section
+                class="journal"
+                id="articles"
+                aria-labelledby="journal-title"
+                tabindex="-1"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">THE COLLECTION</p>
+                        <h2 id="journal-title">
+                            Words to <em>wander through.</em>
+                        </h2>
+                    </div>
+
+                    {{if .}}
+                        <span class="count">{{len .}} published</span>
+                    {{end}}
+                </div>
+
+                <div class="article-grid">
+                    {{range .}}
+                        <a class="article-card" href="/article/{{.ID}}">
+                            <div class="card-top">
+                                <span class="date">
+                                    {{.Date.Format "January 2, 2006"}}
+                                </span>
+                                <span
+                                    class="card-number"
+                                    aria-hidden="true"
+                                ></span>
+                            </div>
+
+                            <h3>{{.Title}}</h3>
+
+                            <span class="card-bottom">
+                                <span>Step into the story</span>
+                                <span class="card-arrow" aria-hidden="true">
+                                    ↗
+                                </span>
+                            </span>
+                        </a>
+                    {{else}}
+                        <div class="empty">
+                            <span aria-hidden="true">✳</span>
+                            <h3>A little space for what’s next.</h3>
+                            <p>
+                                The journal is just beginning.
+                                The first article will find its home here.
+                            </p>
+                        </div>
+                    {{end}}
+                </div>
+            </section>
+
+            <details class="about" id="about">
+                <summary>
+                    <span>Behind Scribe</span>
+                    <span class="about-symbol" aria-hidden="true">+</span>
+                </summary>
+
+                <div class="about-copy">
+                    <p>
+                        A personal corner of the internet by Shashank —
+                        for ideas taking shape, things I’m learning,
+                        and moments worth putting into words.
+                    </p>
+                    <p>
+                        Built as part of my roadmap.sh journey.
+                        Thanks for being here.
+                    </p>
+                </div>
+            </details>
+        </main>
+
+        <footer class="container footer">
+            <div class="footer-top">
+                <p>
+                    Stay curious.<br>
+                    <em>It looks good on you.</em>
+                </p>
+
+                <a class="back-top" href="#top" aria-label="Back to top">
+                    ↑
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="author">
+                    <img
+                        src="/public/cat-icon.jpg"
+                        alt="it's me gng"
+                        width="48"
+                        height="48"
+                    >
+                    <div>
+                        <span>Written &amp; built by</span>
+                        <strong>Shashank</strong>
+                    </div>
+                </div>
+
+                <span class="footer-note">
+                    A personal journal. An open invitation.
+                </span>
+
+                <a
+                    class="github-link"
+                    href="https://github.com/lost-pawn/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Shashank on GitHub (opens in a new tab)"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        focusable="false"
+                    >
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                    GitHub
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
