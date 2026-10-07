@@ -1,14 +1,14 @@
 package handlers
 
 import (
+	"bytes"
 	"errors"
 	"github.com/google/uuid"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"scribe/articles"
-	"html/template"
-	"bytes"
 
 	"time"
 )
