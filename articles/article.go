@@ -11,8 +11,3 @@ type Article struct {
 	Content string    `json:"content"`
 	Date    time.Time `json:"date"`
 }
-
-type ArticleWithStatus struct {
-	Article
-	Published bool `json:"-"`
-}
