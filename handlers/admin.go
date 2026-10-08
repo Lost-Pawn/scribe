@@ -337,4 +337,7 @@ func DeleteArticle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	return
 }
