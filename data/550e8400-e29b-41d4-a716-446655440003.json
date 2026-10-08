@@ -1,6 +1,0 @@
-{
-  "id": "550e8400-e29b-41d4-a716-446655440003",
-  "title": "Advanced Go Concurrency Patterns",
-  "content": "Concurrency is one of Go's greatest strengths. Go makes it easy to write concurrent programs using goroutines and channels.\n\nIn this article, we dive deep into:\n- Understanding goroutines and how they differ from threads\n- Channels and channel patterns\n- Synchronization primitives (mutexes, semaphores)\n- Common concurrency pitfalls and how to avoid them\n- Real-world examples of concurrent Go applications\n\nMastering concurrency in Go will help you write efficient, high-performance applications.",
-  "date": "2026-10-09T16:45:00Z"
-}
