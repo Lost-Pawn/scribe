@@ -23,7 +23,7 @@ func Server() {
 
 	mux := http.NewServeMux()
 
-	// Static files 
+	// Static files
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
@@ -31,7 +31,7 @@ func Server() {
 	mux.HandleFunc("GET /{$}", handlers.HomeHandler)
 	mux.HandleFunc("GET /article/{id}", handlers.ArticleHandler)
 
-	// Admin routes: 
+	// Admin routes:
 	mux.HandleFunc("GET /admin", auth(handlers.AdminDashboard))
 	mux.HandleFunc("GET /admin/new", auth(handlers.NewArticleForm))
 	mux.HandleFunc("POST /admin/new", auth(handlers.CreateArticle))
