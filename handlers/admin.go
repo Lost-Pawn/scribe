@@ -14,6 +14,15 @@ type AdminRow struct {
 	Scheduled bool
 }
 
+type FormData struct {
+    Title   string
+    Content string
+    Date    string
+    Error   string
+    Action  string
+    Heading string
+}
+
 var dashboardTemplate = template.Must(template.ParseFiles("templates/dashboard.html"))
 
 func AdminDashboard(w http.ResponseWriter, r *http.Request) {
