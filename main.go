@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
+
 	"scribe/handlers"
 )
 
@@ -21,10 +23,15 @@ func Server() {
 
 	mux := http.NewServeMux()
 
+	// Static files 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+
+	// Public routes
 	mux.HandleFunc("GET /{$}", handlers.HomeHandler)
 	mux.HandleFunc("GET /article/{id}", handlers.ArticleHandler)
+
+	// Admin routes: 
 	mux.HandleFunc("GET /admin", auth(handlers.AdminDashboard))
 	mux.HandleFunc("GET /admin/new", auth(handlers.NewArticleForm))
 	mux.HandleFunc("POST /admin/new", auth(handlers.CreateArticle))
@@ -32,10 +39,17 @@ func Server() {
 	mux.HandleFunc("POST /admin/edit/{id}", auth(handlers.EditArticle))
 	mux.HandleFunc("POST /admin/delete/{id}", auth(handlers.DeleteArticle))
 
-	err := http.ListenAndServe("localhost:8001", mux)
-	if err != nil {
-		panic(err)
+	srv := &http.Server{
+		Addr:              "localhost:8080",
+		Handler:           mux,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
+
+	log.Printf("listening on http://%s", srv.Addr)
+	log.Fatal(srv.ListenAndServe())
 }
 
 func main() {
