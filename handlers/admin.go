@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"scribe/articles"
 	"time"
+	"github.com/google/uuid"
 )
 
 type AdminRow struct {
@@ -93,4 +94,93 @@ func NewArticleForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	buf.WriteTo(w)
+}
+
+func CreateArticle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	err := r.ParseForm()
+	if err != nil {
+		log.Printf("error parsing form: %v", err)
+		http.Error(w, "bad request", http.StatusBadRequest)
+		return
+	}
+
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+	dateStr := r.FormValue("date")
+
+	data := FormData{
+		Title:   title,
+		Content: content,
+		Date:    dateStr,
+		Today:   time.Now().UTC().Format("2006-01-02"),
+		Action:  "/admin/new",
+		Heading: "Write a new article",
+	}
+
+	if title == "" {
+		data.TitleError = "Title is required."
+	}
+
+	if len(title) > 200 {
+		data.TitleError = "Maximum title length is 200 characters."
+	}
+
+	if content == "" {
+		data.ContentError = "Content is required."
+	}
+
+	if dateStr == "" {
+		data.DateError = "Date is required."
+	}
+
+	var articleDate time.Time
+
+	if data.DateError == "" {
+		articleDate, err = time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			data.DateError = "Invalid date format. Use YYYY-MM-DD."
+		}
+	}
+
+	if data.TitleError == "" && data.ContentError == "" && data.DateError == "" {
+		article := &articles.Article{
+			ID: 	GenerateID(),
+			Title:   title,
+			Content: content,
+			Date:    articleDate,
+		}
+
+		log.Printf("Article ID before saving: %v", article.ID)
+
+		err = articles.SaveArticle(article)
+		if err != nil {
+			log.Printf("error saving article: %v", err)
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		data.Success = true
+
+		data.Title = ""
+		data.Content = ""
+		data.Date = data.Today
+	}
+
+	var buf bytes.Buffer
+
+	if err := newArticleFormTemplate.Execute(&buf, data); err != nil {
+		log.Printf("template execution error: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if _, err := buf.WriteTo(w); err != nil {
+		log.Printf("error writing response: %v", err)
+	}
+}
+
+func GenerateID() uuid.UUID {
+	return uuid.New()
 }
