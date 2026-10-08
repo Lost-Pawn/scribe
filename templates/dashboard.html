@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14101e">
+  <meta name="description" content="Scribe — a quiet workspace for your words.">
+  <title>Scribe Admin</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Workspace sidebar">
+      <a class="brand" href="/admin" aria-label="Scribe dashboard">
+        scribe<span aria-hidden="true">✳</span>
+      </a>
+
+      <p class="sidebar-caption">THE OPERA OF WORDS</p>
+
+      <nav aria-label="Admin navigation">
+        <a class="nav-link current" href="/admin" aria-current="page">
+          <span aria-hidden="true">◈</span>
+          The Journal
+        </a>
+
+        <a class="nav-link" href="/admin/new">
+          <span aria-hidden="true">＋</span>
+          New article
+        </a>
+
+        <a class="nav-link" href="/">
+          <span aria-hidden="true">↗</span>
+          View site
+        </a>
+      </nav>
+
+      <div class="sidebar-poem">
+        <span aria-hidden="true">✳</span>
+        <p>Letters from<br><em>future.</em></p>
+        <small>A little curiosity, and a cat.</small>
+      </div>
+
+      <div class="profile">
+        <img src="/public/cat-icon.jpg" class="avatar" aria-hidden="true">
+        <div>
+          <strong>Shashank</strong>
+          <span>Author &amp; administrator</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <p>
+          Atelier
+          <span aria-hidden="true">/</span>
+          <strong>Nocturne</strong>
+        </p>
+
+        <a class="quiet-link" href="/">
+          Go back
+          <span aria-hidden="true">↗</span>
+        </a>
+      </header>
+
+      <main id="main" tabindex="-1">
+        <section class="welcome" aria-labelledby="welcome-title">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">✦</span>
+              Echoes of the pen
+            </p>
+
+            <h1 id="welcome-title">
+              Your heartbeat.<br>
+              <em>Your little pomegranate.</em>
+            </h1>
+
+            <p class="intro">
+              A place for the flowers of the past,<br>
+              and the stories still waiting to become.
+            </p>
+          </div>
+
+          <div class="welcome-action">
+            <a class="button primary" href="/admin/new">
+                don't wait, write
+              <span class="button-arrow" aria-hidden="true">↗</span>
+            </a>
+            <p>the pages weeps an absence</p>
+          </div>
+        </section>
+
+        <div class="content-grid">
+          <section
+            class="panel collection"
+            aria-labelledby="stories-title"
+          >
+            <header class="section-heading">
+              <div>
+                <p class="eyebrow">FROM THE DREAMS</p>
+                <h2 id="stories-title">
+                  Whisper <em>little Angel.</em>
+                </h2>
+              </div>
+
+              <span class="pill">{{len .}} tales</span>
+            </header>
+
+            <div
+              class="table-scroll"
+              role="region"
+              aria-label="Article collection"
+              tabindex="0"
+            >
+              <table>
+                <caption class="sr-only">
+                  Articles, dates, scheduling status, and management actions
+                </caption>
+
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Schedule</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {{range .}}
+                  <tr>
+                    <th scope="row" class="story-title">
+                      {{.Article.Title}}
+                    </th>
+
+                    <td>
+                      <time datetime="{{.Article.Date.Format "2006-01-02"}}">
+                        {{.Article.Date.Format "2006-01-02"}}
+                      </time>
+                    </td>
+
+                    <td>
+                      {{if .Scheduled}}
+                      <span class="badge scheduled">scheduled</span>
+                      {{else}}
+                      <span class="not-scheduled">
+                        —
+                        <span class="sr-only">not scheduled</span>
+                      </span>
+                      {{end}}
+                    </td>
+
+                    <td>
+                      <div class="row-actions">
+                        <a
+                          class="edit-link"
+                          href="/admin/edit/{{.Article.ID}}"
+                          aria-label="Edit {{.Article.Title}}"
+                        >
+                          Edit
+                          <span aria-hidden="true">↗</span>
+                        </a>
+
+                        <form
+                          method="post"
+                          action="/admin/delete/{{.Article.ID}}"
+                        >
+                          <button
+                            class="delete-button"
+                            type="submit"
+                            aria-label="Delete {{.Article.Title}}"
+                          >
+                            Delete
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  {{else}}
+                  <tr>
+                    <td class="empty" colspan="4">
+                      <span class="empty-star" aria-hidden="true">✳</span>
+
+                      <h3>
+                        Weave your, <em>stories</em>.
+                      </h3>
+
+                      <p>
+                        The letters will come wrapped on the red strings of fate.<br>
+                        Until then, let your first words find their way home.
+                      </p>
+
+                      <a class="empty-link" href="/admin/new">
+                        Write the first article
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    </td>
+                  </tr>
+                  {{end}}
+                </tbody>
+              </table>
+            </div>
+
+            <footer class="collection-footer">
+              "Maybe it's not about happy endings, Maybe it's about the story."
+            </footer>
+          </section>
+
+          <aside
+            class="inspiration"
+            aria-labelledby="inspiration-title"
+          >
+            <p class="eyebrow">A NOTE TO THE AUTHOR</p>
+            <span class="inspiration-star" aria-hidden="true">✳</span>
+
+            <h2 id="inspiration-title">
+              To write is<br>
+              <em>to bleed.</em>
+            </h2>
+
+            <p>
+              Leave a little of yourself on the page. 
+              <br>
+              The words will sing your story.
+            </p>
+
+            <div class="inspiration-bottom">
+              <span>LET THE WORDS FIND YOU</span>
+              <span aria-hidden="true">↗</span>
+            </div>
+          </aside>
+        </div>
+
+        <footer class="footer">
+          <p>Atelier<em> Nocturne</em></p>
+          <a href="#top">
+            Back to top
+            <span aria-hidden="true">↑</span>
+          </a>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
