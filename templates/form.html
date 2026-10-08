@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#14101e">
-  <title>Create New Article — Scribe</title>
+  <title>{{.Heading}} — Scribe</title>
   <link rel="stylesheet" href="/static/form.css">
 </head>
 
@@ -29,7 +29,7 @@
   <main id="main" class="container" tabindex="-1">
     <div class="page-heading">
       <p class="eyebrow">THE OPERA OF WORDS</p>
-      <h1>Write a new article</h1>
+      <h1>{{.Heading}}</h1>
       <p class="intro">
         Flowers of the past. <em>Words for the future.</em>
       </p>
@@ -113,7 +113,7 @@
 
         <form
           method="post"
-          action="/admin/new"
+          action="{{.Action}}"
           aria-describedby="required-note"
           aria-busy="{{if .Submitting}}true{{else}}false{{end}}"
         >
