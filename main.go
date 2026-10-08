@@ -12,6 +12,8 @@ func Server() {
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	mux.HandleFunc("GET /{$}", handlers.HomeHandler)
 	mux.HandleFunc("GET /article/{id}", handlers.ArticleHandler)
+	mux.HandleFunc("GET /admin", handlers.AdminDashboard)  // unprotected route for now, will add authentication later
+	mux.HandleFunc("GET /admin/new", handlers.NewArticleForm) // unprotected route for now, will add authentication later
 
 	err := http.ListenAndServe("localhost:8001", mux)
 	if err != nil {

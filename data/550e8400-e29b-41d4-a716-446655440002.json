@@ -1,0 +1,6 @@
+{
+  "id": "550e8400-e29b-41d4-a716-446655440002",
+  "title": "Web Development Best Practices",
+  "content": "Building scalable web applications requires following industry best practices. This guide covers essential patterns and techniques for modern web development.\n\nKey topics include:\n- Proper error handling and logging\n- Security considerations (authentication, authorization, HTTPS)\n- Performance optimization\n- Testing strategies\n- Code organization and documentation\n\nBy following these practices, you can build robust applications that are maintainable and secure.",
+  "date": "2026-10-07T14:15:00Z"
+}

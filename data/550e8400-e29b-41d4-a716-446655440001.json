@@ -1,0 +1,6 @@
+{
+  "id": "550e8400-e29b-41d4-a716-446655440001",
+  "title": "<script>alert(1)</script>",
+  "content": "Go is an open-source programming language that makes it easy to build simple, reliable, and efficient software. In this article, we'll explore the basics of Go and how to set up your development environment.\n\nGo was designed by Google and has become increasingly popular for building backend services, CLIs, and cloud-native applications. One of the key features of Go is its simplicity and performance.",
+  "date": "2026-10-06T10:30:00Z"
+}
