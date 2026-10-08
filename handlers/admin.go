@@ -2,14 +2,14 @@ package handlers
 
 import (
 	"bytes"
+	"errors"
+	"github.com/google/uuid"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"scribe/articles"
 	"time"
-	"errors"
-	"os"
-	"github.com/google/uuid"
 )
 
 type AdminRow struct {
@@ -18,27 +18,26 @@ type AdminRow struct {
 }
 
 type FormData struct {
-    Title        string
-    Content      string
-    Date         string
-    Today        string
+	Title   string
+	Content string
+	Date    string
+	Today   string
 
-    Error        string
-    TitleError   string
-    ContentError string
-    DateError    string
+	Error        string
+	TitleError   string
+	ContentError string
+	DateError    string
 
-    Success   bool
-    Submitting bool
-    CSRFToken string
+	Success    bool
+	Submitting bool
+	CSRFToken  string
 
-    Action  string
-    Heading string
+	Action  string
+	Heading string
 }
 
 var dashboardTemplate = template.Must(template.ParseFiles("templates/dashboard.html"))
 var newArticleFormTemplate = template.Must(template.ParseFiles("templates/form.html"))
-
 
 func AdminDashboard(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -148,7 +147,7 @@ func CreateArticle(w http.ResponseWriter, r *http.Request) {
 
 	if data.TitleError == "" && data.ContentError == "" && data.DateError == "" {
 		article := &articles.Article{
-			ID: 	GenerateID(),
+			ID:      GenerateID(),
 			Title:   title,
 			Content: content,
 			Date:    articleDate,
@@ -206,12 +205,12 @@ func GetArticleForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := FormData{
-    Title:   article.Title,
-    Content: article.Content,
-    Date:    article.Date.Format("2006-01-02"),
-    Action:  "/admin/edit/" + id.String(),
-    Heading: "Edit article",
-}
+		Title:   article.Title,
+		Content: article.Content,
+		Date:    article.Date.Format("2006-01-02"),
+		Action:  "/admin/edit/" + id.String(),
+		Heading: "Edit article",
+	}
 
 	var buf bytes.Buffer
 	err = newArticleFormTemplate.Execute(&buf, data)
@@ -338,6 +337,4 @@ func DeleteArticle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
-
-	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
