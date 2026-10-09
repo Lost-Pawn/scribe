@@ -1,5 +1,4 @@
 # Scribe
-Roadmap.sh Project: https://roadmap.sh/projects/personal-blog
 
 A lightweight, personal blogging platform built with Go. Create, edit, delete, and publish articles with scheduled publishing support. Features admin authentication and file-based storage.
 
