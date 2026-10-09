@@ -59,7 +59,7 @@ A lightweight, personal blogging platform built with Go. Create, edit, delete, a
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/lost-pawn/scribe.git
 cd scribe
 ```
 
